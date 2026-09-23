@@ -16,7 +16,7 @@
             {
               "id": 41,
               "inputs": {},
-              "position": "90,10 90,130",
+              "position": "90,10 90,70",
               "sourceConnector": "bottom",
               "target": {
                 "id": 40
@@ -46,7 +46,7 @@
             }
           },
           "name": "set_field_values_forEach",
-          "position": "-30,890",
+          "position": "-30,790",
           "title": "For Each"
         },
         {
@@ -54,13 +54,13 @@
           "id": 40,
           "inputs": {},
           "name": "wf_inputs",
-          "position": "-30,130",
+          "position": "-30,70",
           "title": "Get Workflow Inputs",
           "transitions": [
             {
               "id": 58,
               "inputs": {},
-              "position": "90,190 90,300",
+              "position": "90,130 90,180",
               "sourceConnector": "bottom",
               "target": {
                 "id": 42
@@ -76,13 +76,13 @@
           "inputs": {
             "duration": 100
           },
-          "position": "-30,300",
+          "position": "-30,180",
           "title": "Delay",
           "transitions": [
             {
               "id": 44,
               "inputs": {},
-              "position": "90,430 90,490",
+              "position": "90,310 90,370",
               "sourceConnector": "bottom",
               "target": {
                 "id": 56
@@ -118,13 +118,12 @@
             }
           },
           "name": "empty_fields",
-          "position": "-30,490",
+          "position": "-30,370",
           "title": "Create Value",
           "transitions": [
             {
-              "id": 63,
-              "inputs": {},
-              "position": "90,610 90,690",
+              "id": 78,
+              "position": "90,490 90,580",
               "sourceConnector": "bottom",
               "target": {
                 "id": 65
@@ -172,13 +171,12 @@
             }
           },
           "name": "filtered_editable_attributes",
-          "position": "-30,690",
+          "position": "-30,580",
           "title": "Create Value",
           "transitions": [
             {
-              "id": 64,
-              "inputs": {},
-              "position": "90,810 90,890",
+              "id": 57,
+              "position": "90,700 90,790",
               "sourceConnector": "bottom",
               "target": {
                 "id": 36
@@ -244,12 +242,12 @@
           "title": "Set Form Element Items",
           "transitions": [
             {
-              "id": 67,
+              "id": 52,
               "inputs": {},
-              "position": "-310,520 -310,640",
+              "position": "-310,520 -310,590",
               "sourceConnector": "bottom",
               "target": {
-                "id": 54
+                "id": 51
               }
             }
           ]
@@ -535,7 +533,53 @@
           "title": "Log"
         },
         {
+          "action": "gcx:wf:core::If",
+          "description": "emptyFields === true",
+          "id": 51,
+          "inputs": {
+            "condition": {
+              "accessors": [
+                "$empty_fields"
+              ],
+              "annotations": [
+                {
+                  "count": 13,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$empty_fields.result === true",
+              "source": "$empty_fields.result === true"
+            }
+          },
+          "position": "-430,590",
+          "title": "If",
+          "transitions": [
+            {
+              "branch": "false",
+              "id": 59,
+              "position": "-190,635 -70,635 -70,760",
+              "sourceConnector": "right",
+              "target": {
+                "id": 54
+              },
+              "targetConnector": "top"
+            },
+            {
+              "branch": "true",
+              "id": 74,
+              "position": "-430,635 -500,635 -500,760",
+              "sourceConnector": "left",
+              "target": {
+                "id": 62
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
           "action": "gcx:wf:forms::SetCurrentFormElementItem",
+          "description": "set the dropdown to the **default** value",
           "id": 54,
           "inputs": {
             "elementName": {
@@ -583,8 +627,95 @@
             }
           },
           "name": "set_current_form_element_item",
-          "position": "-430,580",
+          "position": "-190,760",
           "title": "Set Current Form Element Item"
+        },
+        {
+          "action": "gcx:wf:forms::SetFormElementProperty",
+          "description": "set \"current\" to an empty value.",
+          "id": 62,
+          "inputs": {
+            "elementName": {
+              "accessors": [
+                "$set_field_values_forEach"
+              ],
+              "annotations": [
+                {
+                  "count": 25,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$set_field_values_forEach.item.name + \"_field\"",
+              "source": "$set_field_values_forEach.item.name + \"_field\""
+            },
+            "form": {
+              "accessors": [
+                "$$form"
+              ],
+              "annotations": [
+                {
+                  "count": 6,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$$form",
+              "source": "$$form"
+            },
+            "propertyName": "current"
+          },
+          "position": "-620,760",
+          "title": "Set Form Element Property",
+          "transitions": [
+            {
+              "id": 68,
+              "inputs": {},
+              "position": "-500,820 -500,870",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 66
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:forms::SetFormElementProperty",
+          "description": "set \"value\" to an empty value.",
+          "id": 66,
+          "inputs": {
+            "elementName": {
+              "accessors": [
+                "$set_field_values_forEach"
+              ],
+              "annotations": [
+                {
+                  "count": 25,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$set_field_values_forEach.item.name + \"_field\"",
+              "source": "$set_field_values_forEach.item.name + \"_field\""
+            },
+            "form": {
+              "accessors": [
+                "$$form"
+              ],
+              "annotations": [
+                {
+                  "count": 6,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$$form",
+              "source": "$$form"
+            },
+            "propertyName": "value"
+          },
+          "position": "-620,870",
+          "title": "Set Form Element Property"
         }
       ]
     }
