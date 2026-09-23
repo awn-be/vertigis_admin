@@ -1,0 +1,617 @@
+{
+  "_properties": {
+    "isServerWorkflow": false
+  },
+  "components": [
+    {
+      "id": 2,
+      "steps": [
+        {
+          "id": 3,
+          "inputs": {},
+          "position": "0,-50",
+          "purpose": "start",
+          "title": "Start",
+          "transitions": [
+            {
+              "id": 41,
+              "inputs": {},
+              "position": "90,10 90,130",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 40
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core:loop:ForEach",
+          "description": "set the default values and domains to the input fields.",
+          "id": 36,
+          "inputs": {
+            "items": {
+              "accessors": [
+                "$filtered_editable_attributes"
+              ],
+              "annotations": [
+                {
+                  "count": 29,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$filtered_editable_attributes.result",
+              "source": "$filtered_editable_attributes.result"
+            }
+          },
+          "name": "set_field_values_forEach",
+          "position": "-30,890",
+          "title": "For Each"
+        },
+        {
+          "action": "gcx:wf:core::GetWorkflowInputs",
+          "id": 40,
+          "inputs": {},
+          "name": "wf_inputs",
+          "position": "-30,130",
+          "title": "Get Workflow Inputs",
+          "transitions": [
+            {
+              "id": 58,
+              "inputs": {},
+              "position": "90,190 90,300",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 42
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::Delay",
+          "description": "wait 100ms in order to make sure, that the form DOM ist fully loaded. if we dont't do this, we had the problem, that the values were not filled into the field some times.",
+          "id": 42,
+          "inputs": {
+            "duration": 100
+          },
+          "position": "-30,300",
+          "title": "Delay",
+          "transitions": [
+            {
+              "id": 44,
+              "inputs": {},
+              "position": "90,430 90,490",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 56
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::CreateValue",
+          "description": "if empty_fields is true. the form elements are empty except for the coded values.",
+          "id": 56,
+          "inputs": {
+            "expression": {
+              "accessors": [
+                "$wf_inputs",
+                "$wf_inputs"
+              ],
+              "annotations": [
+                {
+                  "count": 10,
+                  "index": 22,
+                  "kind": "idref"
+                },
+                {
+                  "count": 10,
+                  "index": 80,
+                  "kind": "idref"
+                }
+              ],
+              "code": "(() => {\n    if (typeof $wf_inputs.inputs.emptyFields === \"boolean\") {\n        return $wf_inputs.inputs.emptyFields;\n    }\n    return false;\n})()",
+              "source": "(() => {\n  if (typeof $wf_inputs.inputs.emptyFields === \"boolean\") {\n    return $wf_inputs.inputs.emptyFields;\n  }\n  return false;\n})();"
+            }
+          },
+          "name": "empty_fields",
+          "position": "-30,490",
+          "title": "Create Value",
+          "transitions": [
+            {
+              "id": 63,
+              "inputs": {},
+              "position": "90,610 90,690",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 65
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::CreateValue",
+          "description": "if the user wants emtpy fields, we filter the editableAttributes to the ones with codedValues.",
+          "id": 65,
+          "inputs": {
+            "expression": {
+              "accessors": [
+                "$empty_fields",
+                "$wf_inputs",
+                "$wf_inputs",
+                "$wf_inputs"
+              ],
+              "annotations": [
+                {
+                  "count": 13,
+                  "index": 15,
+                  "kind": "idref"
+                },
+                {
+                  "count": 10,
+                  "index": 59,
+                  "kind": "idref"
+                },
+                {
+                  "count": 10,
+                  "index": 144,
+                  "kind": "idref"
+                },
+                {
+                  "count": 10,
+                  "index": 266,
+                  "kind": "idref"
+                }
+              ],
+              "code": "(() => {\n    if ($empty_fields.result === true) {\n        return $wf_inputs.inputs.editableAttributes.filter((attribute) => {\n            const fieldValue = $wf_inputs.inputs.fieldValues[attribute.name];\n            return fieldValue.hasOwnProperty(\"codedValues\");\n        });\n    }\n    return $wf_inputs.inputs.editableAttributes;\n})()",
+              "source": "(() => {\n  if ($empty_fields.result === true) {\n    return $wf_inputs.inputs.editableAttributes.filter((attribute) => {\n      const fieldValue =$wf_inputs.inputs.fieldValues[attribute.name];\n      return fieldValue.hasOwnProperty(\"codedValues\")\n    });\n  }\n  return $wf_inputs.inputs.editableAttributes;\n})();\n"
+            }
+          },
+          "name": "filtered_editable_attributes",
+          "position": "-30,690",
+          "title": "Create Value",
+          "transitions": [
+            {
+              "id": 64,
+              "inputs": {},
+              "position": "90,810 90,890",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 36
+              },
+              "targetConnector": "top"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "steps": [
+        {
+          "action": "gcx:wf:forms::SetFormElementItems",
+          "description": "set the domains on the field.",
+          "id": 10,
+          "inputs": {
+            "elementName": {
+              "accessors": [
+                "$set_field_values_forEach"
+              ],
+              "annotations": [
+                {
+                  "count": 25,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$set_field_values_forEach.item.name + \"_field\"",
+              "source": "$set_field_values_forEach.item.name + \"_field\""
+            },
+            "form": {
+              "accessors": [
+                "$$form"
+              ],
+              "annotations": [
+                {
+                  "count": 6,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$$form",
+              "source": "$$form"
+            },
+            "items": {
+              "accessors": [
+                "$dropdown_values"
+              ],
+              "annotations": [
+                {
+                  "count": 16,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$dropdown_values.result",
+              "source": "$dropdown_values.result"
+            }
+          },
+          "position": "-430,460",
+          "title": "Set Form Element Items",
+          "transitions": [
+            {
+              "id": 67,
+              "inputs": {},
+              "position": "-310,520 -310,640",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 54
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::If",
+          "description": "if the field has coded values.",
+          "id": 14,
+          "inputs": {
+            "condition": {
+              "accessors": [
+                "$field_configs"
+              ],
+              "annotations": [
+                {
+                  "count": 14,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$field_configs.result.type === \"coded-value\"",
+              "source": "$field_configs.result.type === \"coded-value\""
+            }
+          },
+          "position": "-30,290",
+          "title": "If",
+          "transitions": [
+            {
+              "branch": "true",
+              "id": 28,
+              "inputs": {},
+              "position": "-30,335 -190,340",
+              "sourceConnector": "left",
+              "target": {
+                "id": 18
+              },
+              "targetConnector": "right"
+            },
+            {
+              "branch": "false",
+              "id": 33,
+              "inputs": {},
+              "position": "210,335 870,335 870,370",
+              "sourceConnector": "right",
+              "target": {
+                "id": 45
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:forms::SetFormElementProperty",
+          "id": 16,
+          "inputs": {
+            "elementName": {
+              "accessors": [
+                "$set_field_values_forEach"
+              ],
+              "annotations": [
+                {
+                  "count": 25,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$set_field_values_forEach.item.name + \"_field\"",
+              "source": "$set_field_values_forEach.item.name + \"_field\""
+            },
+            "form": {
+              "accessors": [
+                "$$form"
+              ],
+              "annotations": [
+                {
+                  "count": 6,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$$form",
+              "source": "$$form"
+            },
+            "propertyName": "value",
+            "propertyValue": {
+              "accessors": [
+                "$field_configs"
+              ],
+              "annotations": [
+                {
+                  "count": 14,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$field_configs.result.defaultValue",
+              "source": "$field_configs.result.defaultValue"
+            }
+          },
+          "position": "750,640",
+          "title": "Set Form Element Property"
+        },
+        {
+          "action": "gcx:wf:core::CreateValue",
+          "id": 18,
+          "inputs": {
+            "expression": {
+              "accessors": [
+                "$field_configs"
+              ],
+              "annotations": [
+                {
+                  "count": 14,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$field_configs.result.codedValues.map(codedValue => {\n    return { value: codedValue.code, label: codedValue.name };\n})",
+              "source": "$field_configs.result.codedValues.map(codedValue => {\n    return {value: codedValue.code, label: codedValue.name }\n})"
+            }
+          },
+          "name": "dropdown_values",
+          "position": "-430,310",
+          "title": "dropdownValues",
+          "transitions": [
+            {
+              "id": 69,
+              "inputs": {},
+              "position": "-310,370 -310,460",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 10
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "id": 20,
+          "inputs": {},
+          "position": "0,0",
+          "purpose": "start",
+          "title": "For Each",
+          "transitions": [
+            {
+              "id": 32,
+              "inputs": {},
+              "position": "90,60 90,130",
+              "target": {
+                "id": 22
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::Evaluate",
+          "id": 22,
+          "inputs": {
+            "expression": {
+              "accessors": [
+                "$wf_inputs",
+                "$set_field_values_forEach"
+              ],
+              "annotations": [
+                {
+                  "count": 10,
+                  "index": 0,
+                  "kind": "idref"
+                },
+                {
+                  "count": 25,
+                  "index": 30,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$wf_inputs.inputs.fieldValues[$set_field_values_forEach.item.name]",
+              "source": "$wf_inputs.inputs.fieldValues[$set_field_values_forEach.item.name]"
+            }
+          },
+          "name": "field_configs",
+          "position": "-30,130",
+          "title": "fieldConfigs",
+          "transitions": [
+            {
+              "id": 70,
+              "inputs": {},
+              "position": "90,190 90,290",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 14
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::Switch",
+          "id": 45,
+          "inputs": {
+            "value": {
+              "accessors": [
+                "$field_configs"
+              ],
+              "annotations": [
+                {
+                  "count": 14,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$field_configs.result.type",
+              "source": "$field_configs.result.type"
+            }
+          },
+          "position": "750,370",
+          "title": "Switch",
+          "transitions": [
+            {
+              "id": 46,
+              "inputs": {},
+              "position": "750,400 570,395",
+              "purpose": "default",
+              "sourceConnector": "left",
+              "target": {
+                "id": 47
+              },
+              "targetConnector": "right",
+              "title": "Default"
+            },
+            {
+              "branch": "file",
+              "id": 50,
+              "inputs": {},
+              "position": "930,430 930,445 1090,445",
+              "sourceConnector": "bottom-right",
+              "target": {
+                "id": 49
+              },
+              "targetConnector": "left"
+            },
+            {
+              "branch": "value",
+              "id": 53,
+              "inputs": {},
+              "position": "870,430 870,640",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 16
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::Log",
+          "id": 47,
+          "inputs": {
+            "message": {
+              "accessors": [
+                "$set_field_values_forEach"
+              ],
+              "annotations": [
+                {
+                  "count": 25,
+                  "index": 13,
+                  "kind": "idref"
+                }
+              ],
+              "code": "\"Feldtyp \" + $set_field_values_forEach.item.type + \" wurde nicht erkannt (!).\"",
+              "source": "\"Feldtyp \" + $set_field_values_forEach.item.type + \" wurde nicht erkannt (!).\""
+            }
+          },
+          "position": "330,380",
+          "title": "Log"
+        },
+        {
+          "action": "gcx:wf:core::Log",
+          "id": 49,
+          "inputs": {
+            "message": "Es handelt sich um einen Filepicker."
+          },
+          "position": "1090,430",
+          "title": "Log"
+        },
+        {
+          "action": "gcx:wf:forms::SetCurrentFormElementItem",
+          "id": 54,
+          "inputs": {
+            "elementName": {
+              "accessors": [
+                "$set_field_values_forEach"
+              ],
+              "annotations": [
+                {
+                  "count": 25,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$set_field_values_forEach.item.name + \"_field\"",
+              "source": "$set_field_values_forEach.item.name + \"_field\""
+            },
+            "form": {
+              "accessors": [
+                "$$form"
+              ],
+              "annotations": [
+                {
+                  "count": 6,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$$form",
+              "source": "$$form"
+            },
+            "matchType": "value",
+            "value": {
+              "accessors": [
+                "$field_configs"
+              ],
+              "annotations": [
+                {
+                  "count": 14,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$field_configs.result.defaultValue",
+              "source": "$field_configs.result.defaultValue"
+            }
+          },
+          "name": "set_current_form_element_item",
+          "position": "-430,580",
+          "title": "Set Current Form Element Item"
+        }
+      ]
+    }
+  ],
+  "deploymentConfig": {
+    "supportedApps": {
+      "VSW": true
+    }
+  },
+  "designerVersion": "5.48.1+2",
+  "licenseInfo": {
+    "licenseUrl": "https://a4pt-www-vertigis.infra.be.ch/vgs/workflow/service/auth/license"
+  },
+  "start": {
+    "id": 3
+  },
+  "transitions": [
+    {
+      "branch": "loop",
+      "id": 38,
+      "inputs": {},
+      "source": {
+        "id": 36
+      },
+      "target": {
+        "id": 20
+      }
+    }
+  ]
+}
