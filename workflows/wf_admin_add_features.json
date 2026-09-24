@@ -1,0 +1,1555 @@
+{
+  "_properties": {
+    "isServerWorkflow": false
+  },
+  "components": [
+    {
+      "id": 2,
+      "steps": [
+        {
+          "id": 3,
+          "inputs": {},
+          "position": "0,-260",
+          "purpose": "start",
+          "title": "Start",
+          "transitions": [
+            {
+              "id": 9,
+              "inputs": {},
+              "position": "90,-200 90,-120",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 8
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::GetWorkflowInputs",
+          "id": 8,
+          "inputs": {},
+          "name": "workflow_inputs",
+          "position": "-30,-120",
+          "title": "Get Workflow Inputs",
+          "transitions": [
+            {
+              "id": 190,
+              "inputs": {},
+              "position": "90,-60 90,-10",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 119
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::If",
+          "description": "add feature process was successful.",
+          "id": 28,
+          "inputs": {
+            "condition": {
+              "accessors": [
+                "$add_features",
+                "$try_catch_add_features"
+              ],
+              "annotations": [
+                {
+                  "count": 13,
+                  "index": 0,
+                  "kind": "idref"
+                },
+                {
+                  "count": 23,
+                  "index": 50,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$add_features.success && globalThis.Error.isError($try_catch_add_features.error) === false",
+              "source": "$add_features.success && globalThis.Error.isError($try_catch_add_features.error) === false"
+            }
+          },
+          "position": "-420,1200",
+          "title": "If",
+          "transitions": [
+            {
+              "branch": "false",
+              "id": 144,
+              "inputs": {},
+              "position": "-180,1245 -120,1245 -120,1620 50,1620 50,1640",
+              "sourceConnector": "right",
+              "target": {
+                "id": 140
+              },
+              "targetConnector": "top"
+            },
+            {
+              "branch": "true",
+              "id": 160,
+              "inputs": {},
+              "position": "-420,1245 -470,1245 -470,1320",
+              "sourceConnector": "left",
+              "target": {
+                "id": 117
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:arcgis::RefreshLayer",
+          "id": 34,
+          "inputs": {
+            "layer": {
+              "accessors": [
+                "$workflow_inputs"
+              ],
+              "annotations": [
+                {
+                  "count": 16,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$workflow_inputs.inputs.layer",
+              "source": "$workflow_inputs.inputs.layer"
+            }
+          },
+          "position": "-590,1950",
+          "title": "Refresh Layer",
+          "transitions": [
+            {
+              "id": 114,
+              "inputs": {},
+              "position": "-470,1980 -470,2010",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 145
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::If",
+          "description": "a uuid must be created.",
+          "id": 57,
+          "inputs": {
+            "condition": {
+              "accessors": [
+                "$workflow_inputs"
+              ],
+              "annotations": [
+                {
+                  "count": 16,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$workflow_inputs.inputs.createUUID === true",
+              "source": "$workflow_inputs.inputs.createUUID === true"
+            }
+          },
+          "position": "-430,350",
+          "title": "If",
+          "transitions": [
+            {
+              "branch": "false",
+              "id": 59,
+              "inputs": {},
+              "position": "-190,395 -160,395 -160,720 -300,720 -300,740",
+              "sourceConnector": "right",
+              "target": {
+                "id": 76
+              },
+              "targetConnector": "top"
+            },
+            {
+              "branch": "true",
+              "id": 62,
+              "inputs": {},
+              "position": "-430,395 -450,395 -450,575 -420,575",
+              "sourceConnector": "left",
+              "target": {
+                "id": 60
+              },
+              "targetConnector": "left"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::CreateValue",
+          "description": "we use the crypto api of the browser. see https://developer.mozilla.org/en-US/docs/Web/API/Crypto/randomUUID",
+          "id": 60,
+          "inputs": {
+            "expression": {
+              "accessors": [],
+              "annotations": [],
+              "code": "globalThis.crypto.randomUUID()",
+              "source": "globalThis.crypto.randomUUID()"
+            }
+          },
+          "name": "uuid",
+          "position": "-420,500",
+          "title": "Create Value",
+          "transitions": [
+            {
+              "id": 63,
+              "inputs": {},
+              "position": "-300,660 -300,740",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 76
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::If",
+          "description": "there are geometries to save",
+          "id": 61,
+          "inputs": {
+            "condition": {
+              "accessors": [
+                "$workflow_inputs"
+              ],
+              "annotations": [
+                {
+                  "count": 16,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$workflow_inputs.inputs.geometryPicker.value.geometry.length > 0",
+              "source": "$workflow_inputs.inputs.geometryPicker.value.geometry.length > 0"
+            }
+          },
+          "position": "-30,270",
+          "title": "If",
+          "transitions": [
+            {
+              "branch": "false",
+              "id": 73,
+              "inputs": {},
+              "position": "210,315 230,315 230,2500 -30,2500",
+              "sourceConnector": "right",
+              "target": {
+                "id": 72
+              },
+              "targetConnector": "right"
+            },
+            {
+              "branch": "true",
+              "id": 80,
+              "inputs": {},
+              "position": "-30,315 -310,315 -310,350",
+              "sourceConnector": "left",
+              "target": {
+                "id": 57
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::Exit",
+          "id": 72,
+          "inputs": {},
+          "position": "-210,2470",
+          "title": "Exit"
+        },
+        {
+          "action": "gcx:wf:core:loop:ForEach",
+          "description": "save each geometry as a new feature.",
+          "id": 76,
+          "inputs": {
+            "items": {
+              "accessors": [
+                "$workflow_inputs"
+              ],
+              "annotations": [
+                {
+                  "count": 16,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$workflow_inputs.inputs.geometryPicker.value.geometry",
+              "source": "$workflow_inputs.inputs.geometryPicker.value.geometry"
+            }
+          },
+          "name": "for_each_geometry",
+          "position": "-420,740",
+          "title": "For Each",
+          "transitions": [
+            {
+              "id": 193,
+              "inputs": {},
+              "position": "-300,900 -300,990",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 122
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::RunWorkflow",
+          "id": 100,
+          "inputs": {
+            "arguments": {
+              "accessors": [
+                "$workflow_inputs",
+                "$add_features",
+                "$workflow_inputs",
+                "$workflow_inputs"
+              ],
+              "annotations": [
+                {
+                  "count": 16,
+                  "index": 7,
+                  "kind": "idref"
+                },
+                {
+                  "count": 13,
+                  "index": 49,
+                  "kind": "idref"
+                },
+                {
+                  "count": 16,
+                  "index": 105,
+                  "kind": "idref"
+                },
+                {
+                  "count": 16,
+                  "index": 177,
+                  "kind": "idref"
+                }
+              ],
+              "code": "{ layer: $workflow_inputs.inputs.layer,\n    objectid: $add_features.results[0].objectId,\n    projectAttachments: $workflow_inputs.inputs?.projectAttachments || {},\n    featureAttachments: $workflow_inputs.inputs?.featureAttachments || {}\n}",
+              "source": "{layer:$workflow_inputs.inputs.layer,\n  objectid:$add_features.results[0].objectId,\n  projectAttachments:$workflow_inputs.inputs?.projectAttachments || {},\n  featureAttachments:$workflow_inputs.inputs?.featureAttachments || {}\n}"
+            },
+            "url": "https://a42t-www-geoportal01.infra.be.ch/portal/home/item.html?id=b5f2791033fb4dd4ad50e351220b99c1"
+          },
+          "name": "add_attachments",
+          "position": "-590,1630",
+          "title": "Run Workflow",
+          "transitions": [
+            {
+              "id": 147,
+              "inputs": {},
+              "position": "-470,1720 -470,1770",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 124
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:app::SetApplicationData",
+          "description": "last saved attributes.",
+          "id": 110,
+          "inputs": {
+            "key": "lastSavedAttributes",
+            "value": {
+              "accessors": [
+                "$features"
+              ],
+              "annotations": [
+                {
+                  "count": 9,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$features.result[0].attributes",
+              "source": "$features.result[0].attributes"
+            },
+            "visibility": "memory"
+          },
+          "position": "-590,1440",
+          "title": "Set Application Data",
+          "transitions": [
+            {
+              "id": 163,
+              "inputs": {},
+              "position": "-470,1500 -470,1630",
+              "target": {
+                "id": 100
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::SetWorkflowOutput",
+          "description": "success is true",
+          "id": 113,
+          "inputs": {
+            "name": "success",
+            "value": true
+          },
+          "position": "-590,2250",
+          "title": "Set Workflow Output",
+          "transitions": [
+            {
+              "id": 156,
+              "inputs": {},
+              "position": "-470,2310 -470,2330 -120,2330 -120,2350",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 143
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:app::SetApplicationData",
+          "description": "lastAddedFeatureId ",
+          "id": 117,
+          "inputs": {
+            "key": "lastAddedFeatureId",
+            "value": {
+              "accessors": [
+                "$add_features"
+              ],
+              "annotations": [
+                {
+                  "count": 13,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$add_features.results[0].objectId",
+              "source": "$add_features.results[0].objectId"
+            },
+            "visibility": "memory"
+          },
+          "position": "-590,1320",
+          "title": "Set Application Data",
+          "transitions": [
+            {
+              "id": 162,
+              "inputs": {},
+              "position": "-470,1380 -470,1440",
+              "target": {
+                "id": 110
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:app::GetApplicationData",
+          "id": 119,
+          "inputs": {
+            "key": "portalUser",
+            "visibility": "memory"
+          },
+          "name": "portal_user",
+          "position": "-30,-10",
+          "title": "Get Application Data",
+          "transitions": [
+            {
+              "id": 127,
+              "inputs": {},
+              "position": "90,50 90,110",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 135
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::TryCatch",
+          "id": 122,
+          "inputs": {},
+          "name": "try_catch_add_features",
+          "position": "-420,990",
+          "title": "Try Catch",
+          "transitions": [
+            {
+              "id": 159,
+              "inputs": {},
+              "position": "-300,1110 -300,1200",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 28
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::If",
+          "description": "add attachment process was successfull.",
+          "id": 124,
+          "inputs": {
+            "condition": {
+              "accessors": [
+                "$add_attachments"
+              ],
+              "annotations": [
+                {
+                  "count": 16,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$add_attachments.result?.success === true",
+              "source": "$add_attachments.result?.success === true"
+            }
+          },
+          "position": "-590,1770",
+          "title": "If",
+          "transitions": [
+            {
+              "branch": "true",
+              "id": 126,
+              "inputs": {},
+              "position": "-590,1825 -610,1825 -610,1965 -590,1965",
+              "sourceConnector": "left",
+              "target": {
+                "id": 34
+              },
+              "targetConnector": "left"
+            },
+            {
+              "branch": "false",
+              "id": 139,
+              "inputs": {},
+              "position": "-350,1825 -240,1830",
+              "sourceConnector": "right",
+              "target": {
+                "id": 137
+              },
+              "targetConnector": "left"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::CreateValue",
+          "description": "array to save the the generated features",
+          "id": 135,
+          "inputs": {
+            "expression": {
+              "accessors": [],
+              "annotations": [],
+              "code": "[]",
+              "source": "[]"
+            }
+          },
+          "name": "features",
+          "position": "-30,110",
+          "title": "Create Value",
+          "transitions": [
+            {
+              "id": 142,
+              "inputs": {},
+              "position": "90,220 90,270",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 61
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::SetWorkflowOutput",
+          "description": "message: save error",
+          "id": 137,
+          "inputs": {
+            "name": "message",
+            "value": {
+              "accessors": [
+                "strings",
+                "JSON",
+                "$add_attachments"
+              ],
+              "annotations": [
+                {
+                  "count": 7,
+                  "index": 0,
+                  "kind": "idref"
+                },
+                {
+                  "count": 4,
+                  "index": 31,
+                  "kind": "idref"
+                },
+                {
+                  "count": 16,
+                  "index": 46,
+                  "kind": "idref"
+                }
+              ],
+              "code": "strings[\"update_save_error\"] + JSON.stringify($add_attachments.result.message)",
+              "source": "strings[\"update_save_error\"] + JSON.stringify($add_attachments.result.message)"
+            }
+          },
+          "position": "-240,1800",
+          "title": "Set Workflow Output",
+          "transitions": [
+            {
+              "id": 141,
+              "inputs": {},
+              "position": "0,1830 50,1830 50,1980",
+              "sourceConnector": "right",
+              "target": {
+                "id": 146
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::SetWorkflowOutput",
+          "description": "message: save error",
+          "id": 140,
+          "inputs": {
+            "name": "message",
+            "value": {
+              "accessors": [
+                "strings",
+                "JSON",
+                "$add_features"
+              ],
+              "annotations": [
+                {
+                  "count": 7,
+                  "index": 0,
+                  "kind": "idref"
+                },
+                {
+                  "count": 4,
+                  "index": 31,
+                  "kind": "idref"
+                },
+                {
+                  "count": 13,
+                  "index": 46,
+                  "kind": "idref"
+                }
+              ],
+              "code": "strings[\"update_save_error\"] + JSON.stringify($add_features.results)",
+              "source": "strings[\"update_save_error\"] + JSON.stringify($add_features.results)"
+            }
+          },
+          "position": "-70,1640",
+          "title": "Set Workflow Output",
+          "transitions": [
+            {
+              "id": 138,
+              "inputs": {},
+              "position": "50,1700 50,1980",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 146
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:arcgis::ClearGraphicsLayer",
+          "description": "remove the geometryPicker geometry.",
+          "id": 143,
+          "inputs": {},
+          "position": "-240,2350",
+          "title": "Clear Graphics",
+          "transitions": [
+            {
+              "id": 155,
+              "inputs": {},
+              "position": "-120,2430 -120,2470",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 72
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:app::SetApplicationData",
+          "description": "set the created geo_id as application data. this way we can use it later when adding partial geometries.",
+          "id": 145,
+          "inputs": {
+            "key": "geo_id",
+            "value": {
+              "accessors": [
+                "$uuid"
+              ],
+              "annotations": [
+                {
+                  "count": 5,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$uuid.result",
+              "source": "$uuid.result"
+            },
+            "visibility": "memory"
+          },
+          "position": "-590,2010",
+          "title": "Set Application Data",
+          "transitions": [
+            {
+              "id": 252,
+              "inputs": {},
+              "position": "-470,2110 -470,2150",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 251
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::SetWorkflowOutput",
+          "description": "success is false",
+          "id": 146,
+          "inputs": {
+            "name": "success",
+            "value": false
+          },
+          "position": "-70,1980",
+          "title": "Set Workflow Output",
+          "transitions": [
+            {
+              "id": 115,
+              "inputs": {},
+              "position": "50,2040 50,2330 -120,2330 -120,2350",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 143
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::SetWorkflowOutput",
+          "description": "message: update successfull",
+          "id": 251,
+          "inputs": {
+            "name": "message",
+            "value": {
+              "accessors": [
+                "getText"
+              ],
+              "code": "getText(values.key)",
+              "source": "@update_save_success",
+              "values": {
+                "key": "@update_save_success"
+              }
+            }
+          },
+          "position": "-590,2150",
+          "title": "Set Workflow Output",
+          "transitions": [
+            {
+              "id": 253,
+              "inputs": {},
+              "position": "-470,2210 -470,2250",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 113
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 77,
+      "steps": [
+        {
+          "action": "gcx:wf:core::If",
+          "description": "we have to save a geo_id",
+          "id": 68,
+          "inputs": {
+            "condition": {
+              "accessors": [
+                "$workflow_inputs"
+              ],
+              "annotations": [
+                {
+                  "count": 16,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$workflow_inputs.inputs.createUUID === true",
+              "source": "$workflow_inputs.inputs.createUUID === true"
+            }
+          },
+          "position": "-30,470",
+          "title": "If",
+          "transitions": [
+            {
+              "branch": "false",
+              "id": 70,
+              "inputs": {},
+              "position": "210,515 230,515 230,860 70,860 70,880",
+              "sourceConnector": "right",
+              "target": {
+                "id": 103
+              },
+              "targetConnector": "top"
+            },
+            {
+              "branch": "true",
+              "id": 74,
+              "inputs": {},
+              "position": "-30,515 -180,515 -180,690",
+              "sourceConnector": "left",
+              "target": {
+                "id": 71
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:arcgis::SetFeatureAttribute",
+          "description": "",
+          "id": 71,
+          "inputs": {
+            "attributeName": "geo_id",
+            "attributeValue": {
+              "accessors": [
+                "$uuid"
+              ],
+              "annotations": [
+                {
+                  "count": 5,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$uuid.result",
+              "source": "$uuid.result"
+            },
+            "feature": {
+              "accessors": [
+                "$feature"
+              ],
+              "annotations": [
+                {
+                  "count": 8,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$feature.feature",
+              "source": "$feature.feature"
+            }
+          },
+          "position": "-300,690",
+          "title": "Set the geo_id",
+          "transitions": [
+            {
+              "id": 75,
+              "inputs": {},
+              "position": "-180,720 -180,860 70,860 70,880",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 103
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "id": 78,
+          "inputs": {},
+          "position": "0,0",
+          "purpose": "start",
+          "title": "For Each",
+          "transitions": [
+            {
+              "id": 82,
+              "inputs": {},
+              "position": "90,60 90,130",
+              "target": {
+                "id": 81
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:arcgis::CreateGraphic",
+          "id": 81,
+          "inputs": {
+            "geometry": {
+              "accessors": [
+                "$for_each_geometry"
+              ],
+              "annotations": [
+                {
+                  "count": 18,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$for_each_geometry.item",
+              "source": "$for_each_geometry.item"
+            }
+          },
+          "name": "feature",
+          "position": "-30,130",
+          "title": "Create Feature",
+          "transitions": [
+            {
+              "id": 133,
+              "inputs": {},
+              "position": "90,190 90,250",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 128
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::If",
+          "description": "manual editor tracking is activated",
+          "id": 103,
+          "inputs": {
+            "condition": {
+              "accessors": [
+                "$workflow_inputs"
+              ],
+              "annotations": [
+                {
+                  "count": 16,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$workflow_inputs.inputs.manualEditorTracking === true",
+              "source": "$workflow_inputs.inputs.manualEditorTracking === true"
+            }
+          },
+          "position": "-50,880",
+          "title": "If",
+          "transitions": [
+            {
+              "branch": "false",
+              "id": 108,
+              "inputs": {},
+              "position": "190,925 210,925 210,1185 190,1185",
+              "sourceConnector": "right",
+              "target": {
+                "id": 136
+              },
+              "targetConnector": "right"
+            },
+            {
+              "branch": "true",
+              "id": 123,
+              "inputs": {},
+              "position": "-50,925 -290,925 -290,1030",
+              "sourceConnector": "left",
+              "target": {
+                "id": 105
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::RunWorkflow",
+          "id": 105,
+          "inputs": {
+            "arguments": {
+              "accessors": [
+                "$workflow_inputs",
+                "$feature"
+              ],
+              "annotations": [
+                {
+                  "count": 16,
+                  "index": 7,
+                  "kind": "idref"
+                },
+                {
+                  "count": 8,
+                  "index": 46,
+                  "kind": "idref"
+                }
+              ],
+              "code": "{ layer: $workflow_inputs.inputs.layer, feature: $feature.feature, newFeature: true }",
+              "source": "{layer:$workflow_inputs.inputs.layer, feature:$feature.feature, newFeature:true}"
+            },
+            "url": "https://a42t-www-geoportal01.infra.be.ch/portal/home/item.html?id=b1c355b8b4c244f592e313f1a3a62c81"
+          },
+          "name": "wf_admin_add_editor_tracking_infos",
+          "position": "-410,1030",
+          "title": "Run Workflow",
+          "transitions": [
+            {
+              "id": 107,
+              "inputs": {},
+              "position": "-290,1120 -290,1185 -50,1185",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 136
+              },
+              "targetConnector": "left"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core:loop:ForEach",
+          "description": "add the values form the form to the feature.",
+          "id": 128,
+          "inputs": {
+            "items": {
+              "accessors": [
+                "$workflow_inputs"
+              ],
+              "annotations": [
+                {
+                  "count": 16,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$workflow_inputs.inputs.editableAttributes",
+              "source": "$workflow_inputs.inputs.editableAttributes"
+            }
+          },
+          "name": "set_feature_value_loop",
+          "position": "-30,250",
+          "title": "For Each",
+          "transitions": [
+            {
+              "id": 69,
+              "inputs": {},
+              "position": "90,410 90,470",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 68
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::Evaluate",
+          "description": "add the feature to the features array",
+          "id": 136,
+          "inputs": {
+            "expression": {
+              "accessors": [
+                "$features",
+                "$feature"
+              ],
+              "annotations": [
+                {
+                  "count": 9,
+                  "index": 0,
+                  "kind": "idref"
+                },
+                {
+                  "count": 8,
+                  "index": 22,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$features.result.push($feature.feature)",
+              "source": "$features.result.push($feature.feature)"
+            }
+          },
+          "name": "add_feature",
+          "position": "-50,1140",
+          "title": "Evaluate Expression"
+        }
+      ]
+    },
+    {
+      "id": 94,
+      "steps": [
+        {
+          "action": "gcx:wf:forms::GetFormElementValue",
+          "id": 98,
+          "inputs": {
+            "elementName": {
+              "accessors": [
+                "$formElementId"
+              ],
+              "annotations": [
+                {
+                  "count": 14,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$formElementId.result",
+              "source": "$formElementId.result"
+            },
+            "form": {
+              "accessors": [
+                "$$form"
+              ],
+              "annotations": [
+                {
+                  "count": 6,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$$form",
+              "source": "$$form"
+            }
+          },
+          "name": "formElementValue",
+          "position": "-20,270",
+          "title": "Get Form Element Value",
+          "transitions": [
+            {
+              "id": 188,
+              "inputs": {},
+              "position": "100,330 100,400",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 183
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "id": 102,
+          "inputs": {},
+          "position": "10,0",
+          "purpose": "start",
+          "title": "For Each",
+          "transitions": [
+            {
+              "id": 112,
+              "inputs": {},
+              "position": "100,60 100,100",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 104
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::CreateValue",
+          "description": "the form element id of the field.",
+          "id": 104,
+          "inputs": {
+            "expression": {
+              "accessors": [
+                "$set_feature_value_loop"
+              ],
+              "annotations": [
+                {
+                  "count": 23,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$set_feature_value_loop.item + \"_field\"",
+              "source": "$set_feature_value_loop.item + \"_field\""
+            }
+          },
+          "name": "formElementId",
+          "position": "-20,100",
+          "title": "Create Value",
+          "transitions": [
+            {
+              "id": 189,
+              "inputs": {},
+              "position": "100,190 100,270",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 98
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:arcgis::SetFeatureAttribute",
+          "id": 106,
+          "inputs": {
+            "attributeName": {
+              "accessors": [
+                "$set_feature_value_loop"
+              ],
+              "annotations": [
+                {
+                  "count": 23,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$set_feature_value_loop.item",
+              "source": "$set_feature_value_loop.item"
+            },
+            "attributeValue": {
+              "accessors": [
+                "$formElementValue"
+              ],
+              "annotations": [
+                {
+                  "count": 17,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$formElementValue.value",
+              "source": "$formElementValue.value"
+            },
+            "feature": {
+              "accessors": [
+                "$feature"
+              ],
+              "annotations": [
+                {
+                  "count": 8,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$feature.feature",
+              "source": "$feature.feature"
+            }
+          },
+          "position": "190,610",
+          "title": "Set Feature Attribute"
+        },
+        {
+          "action": "gcx:wf:core::If",
+          "description": "the field value is **undefined** or an **empty string**.",
+          "id": 183,
+          "inputs": {
+            "condition": {
+              "accessors": [
+                "$formElementValue",
+                "$formElementValue"
+              ],
+              "annotations": [
+                {
+                  "count": 17,
+                  "index": 7,
+                  "kind": "idref"
+                },
+                {
+                  "count": 17,
+                  "index": 51,
+                  "kind": "idref"
+                }
+              ],
+              "code": "typeof ($formElementValue.value) === \"undefined\" || $formElementValue.value === \"\"",
+              "source": "typeof($formElementValue.value) === \"undefined\" || $formElementValue.value === \"\""
+            }
+          },
+          "position": "-20,400",
+          "title": "If",
+          "transitions": [
+            {
+              "branch": "false",
+              "id": 185,
+              "inputs": {},
+              "position": "220,455 310,455 310,610",
+              "sourceConnector": "right",
+              "target": {
+                "id": 106
+              },
+              "targetConnector": "top"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 125,
+      "steps": [
+        {
+          "id": 129,
+          "inputs": {},
+          "position": "0,0",
+          "purpose": "start",
+          "title": "Try",
+          "transitions": [
+            {
+              "id": 153,
+              "inputs": {},
+              "position": "90,60 90,170",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 152
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:arcgis::AddFeatures",
+          "description": "add the features to the layer.",
+          "id": 152,
+          "inputs": {
+            "features": {
+              "accessors": [
+                "$features"
+              ],
+              "annotations": [
+                {
+                  "count": 9,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$features.result",
+              "source": "$features.result"
+            },
+            "layer": {
+              "accessors": [
+                "$workflow_inputs"
+              ],
+              "annotations": [
+                {
+                  "count": 16,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$workflow_inputs.inputs.layer",
+              "source": "$workflow_inputs.inputs.layer"
+            }
+          },
+          "name": "add_features",
+          "position": "-30,170",
+          "title": "Add Features"
+        }
+      ]
+    },
+    {
+      "id": 132,
+      "steps": [
+        {
+          "id": 148,
+          "inputs": {},
+          "position": "0,0",
+          "purpose": "start",
+          "title": "Catch",
+          "transitions": [
+            {
+              "id": 167,
+              "inputs": {},
+              "position": "90,60 90,130",
+              "target": {
+                "id": 166
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::Log",
+          "id": 164,
+          "inputs": {
+            "level": "error",
+            "message": {
+              "accessors": [
+                "JSON",
+                "$try_catch_add_features"
+              ],
+              "annotations": [
+                {
+                  "count": 4,
+                  "index": 0,
+                  "kind": "idref"
+                },
+                {
+                  "count": 23,
+                  "index": 15,
+                  "kind": "idref"
+                }
+              ],
+              "code": "JSON.stringify($try_catch_add_features.error?.error?.details?.messages)",
+              "source": "JSON.stringify($try_catch_add_features.error?.error?.details?.messages)"
+            }
+          },
+          "position": "-30,210",
+          "title": "Log"
+        },
+        {
+          "action": "gcx:wf:core::Log",
+          "id": 166,
+          "inputs": {
+            "level": "error",
+            "message": "error when try to add the feature"
+          },
+          "position": "-30,130",
+          "title": "Log",
+          "transitions": [
+            {
+              "id": 168,
+              "inputs": {},
+              "position": "90,160 90,210",
+              "target": {
+                "id": 164
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "deploymentConfig": {
+    "supportedApps": {
+      "VSW": true
+    }
+  },
+  "designerVersion": "5.48.1+2",
+  "licenseInfo": {
+    "licenseUrl": "https://a4pt-www-vertigis.infra.be.ch/vgs/workflow/service/auth/license"
+  },
+  "start": {
+    "id": 3
+  },
+  "strings": {
+    "fr": {
+      "update_save_error": "Une **erreur** s'est produite lors de l'enregistrement des donn�es. Veuillez r�essayer.",
+      "update_save_success": "Feature enregistr�e avec succ�s."
+    },
+    "inv": {
+      "update_save_error": "Es gab einen **Fehler** beim Speichern der Daten. Bitte versuchen sie es nochmal. ",
+      "update_save_success": "Feature erfolgreich gespeichert."
+    }
+  },
+  "transitions": [
+    {
+      "branch": "loop",
+      "id": 79,
+      "inputs": {},
+      "source": {
+        "id": 76
+      },
+      "target": {
+        "id": 78
+      }
+    },
+    {
+      "branch": "loop",
+      "id": 130,
+      "inputs": {},
+      "source": {
+        "id": 128
+      },
+      "target": {
+        "id": 102
+      }
+    },
+    {
+      "branch": "try",
+      "id": 131,
+      "inputs": {},
+      "source": {
+        "id": 122
+      },
+      "target": {
+        "id": 129
+      }
+    },
+    {
+      "branch": "catch",
+      "id": 149,
+      "inputs": {},
+      "source": {
+        "id": 122
+      },
+      "target": {
+        "id": 148
+      }
+    }
+  ]
+}
+ }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "deploymentConfig": {
+    "supportedApps": {
+      "VSW": true
+    }
+  },
+  "designerVersion": "5.48.1+2",
+  "licenseInfo": {
+    "licenseUrl": "https://a4pt-www-vertigis.infra.be.ch/vgs/workflow/service/auth/license"
+  },
+  "start": {
+    "id": 3
+  },
+  "strings": {
+    "fr": {
+      "update_save_error": "Une **erreur** s'est produite lors de l'enregistrement des donn�es. Veuillez r�essayer.",
+      "update_save_success": "Feature enregistr�e avec succ�s."
+    },
+    "inv": {
+      "update_save_error": "Es gab einen **Fehler** beim Speichern der Daten. Bitte versuchen sie es nochmal. ",
+      "update_save_success": "Feature erfolgreich gespeichert."
+    }
+  },
+  "transitions": [
+    {
+      "branch": "loop",
+      "id": 79,
+      "inputs": {},
+      "source": {
+        "id": 76
+      },
+      "target": {
+        "id": 78
+      }
+    },
+    {
+      "branch": "loop",
+      "id": 130,
+      "inputs": {},
+      "source": {
+        "id": 128
+      },
+      "target": {
+        "id": 102
+      }
+    },
+    {
+      "branch": "try",
+      "id": 131,
+      "inputs": {},
+      "source": {
+        "id": 122
+      },
+      "target": {
+        "id": 129
+      }
+    },
+    {
+      "branch": "catch",
+      "id": 149,
+      "inputs": {},
+      "source": {
+        "id": 122
+      },
+      "target": {
+        "id": 148
+      }
+    }
+  ]
+}
