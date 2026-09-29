@@ -123,6 +123,7 @@
           "transitions": [
             {
               "id": 78,
+              "inputs": {},
               "position": "90,490 90,580",
               "sourceConnector": "bottom",
               "target": {
@@ -176,6 +177,7 @@
           "transitions": [
             {
               "id": 57,
+              "inputs": {},
               "position": "90,700 90,790",
               "sourceConnector": "bottom",
               "target": {
@@ -197,17 +199,17 @@
           "inputs": {
             "elementName": {
               "accessors": [
-                "$set_field_values_forEach"
+                "$field_id"
               ],
               "annotations": [
                 {
-                  "count": 25,
+                  "count": 9,
                   "index": 0,
                   "kind": "idref"
                 }
               ],
-              "code": "$set_field_values_forEach.item.name + \"_field\"",
-              "source": "$set_field_values_forEach.item.name + \"_field\""
+              "code": "$field_id.result",
+              "source": "$field_id.result"
             },
             "form": {
               "accessors": [
@@ -272,14 +274,14 @@
               "source": "$field_configs.result.type === \"coded-value\""
             }
           },
-          "position": "-30,290",
+          "position": "-30,310",
           "title": "If",
           "transitions": [
             {
               "branch": "true",
               "id": 28,
               "inputs": {},
-              "position": "-30,335 -190,340",
+              "position": "-30,355 -190,360",
               "sourceConnector": "left",
               "target": {
                 "id": 18
@@ -290,7 +292,7 @@
               "branch": "false",
               "id": 33,
               "inputs": {},
-              "position": "210,335 870,335 870,370",
+              "position": "210,355 870,355 870,380",
               "sourceConnector": "right",
               "target": {
                 "id": 45
@@ -305,17 +307,17 @@
           "inputs": {
             "elementName": {
               "accessors": [
-                "$set_field_values_forEach"
+                "$field_id"
               ],
               "annotations": [
                 {
-                  "count": 25,
+                  "count": 9,
                   "index": 0,
                   "kind": "idref"
                 }
               ],
-              "code": "$set_field_values_forEach.item.name + \"_field\"",
-              "source": "$set_field_values_forEach.item.name + \"_field\""
+              "code": "$field_id.result",
+              "source": "$field_id.result"
             },
             "form": {
               "accessors": [
@@ -347,7 +349,7 @@
               "source": "$field_configs.result.defaultValue"
             }
           },
-          "position": "750,640",
+          "position": "750,560",
           "title": "Set Form Element Property"
         },
         {
@@ -370,13 +372,13 @@
             }
           },
           "name": "dropdown_values",
-          "position": "-430,310",
+          "position": "-430,330",
           "title": "dropdownValues",
           "transitions": [
             {
               "id": 69,
               "inputs": {},
-              "position": "-310,370 -310,460",
+              "position": "-310,390 -310,460",
               "sourceConnector": "bottom",
               "target": {
                 "id": 10
@@ -395,7 +397,7 @@
             {
               "id": 32,
               "inputs": {},
-              "position": "90,60 90,130",
+              "position": "90,60 90,100",
               "target": {
                 "id": 22
               }
@@ -428,16 +430,16 @@
             }
           },
           "name": "field_configs",
-          "position": "-30,130",
+          "position": "-30,100",
           "title": "fieldConfigs",
           "transitions": [
             {
-              "id": 70,
+              "id": 75,
               "inputs": {},
-              "position": "90,190 90,290",
+              "position": "90,160 90,200",
               "sourceConnector": "bottom",
               "target": {
-                "id": 14
+                "id": 63
               },
               "targetConnector": "top"
             }
@@ -462,26 +464,26 @@
               "source": "$field_configs.result.type"
             }
           },
-          "position": "750,370",
+          "position": "750,380",
           "title": "Switch",
           "transitions": [
             {
               "id": 46,
               "inputs": {},
-              "position": "750,400 570,395",
+              "position": "750,410 460,410 460,460",
               "purpose": "default",
               "sourceConnector": "left",
               "target": {
                 "id": 47
               },
-              "targetConnector": "right",
+              "targetConnector": "top",
               "title": "Default"
             },
             {
               "branch": "file",
               "id": 50,
               "inputs": {},
-              "position": "930,430 930,445 1090,445",
+              "position": "930,440 930,455 1090,455",
               "sourceConnector": "bottom-right",
               "target": {
                 "id": 49
@@ -490,9 +492,9 @@
             },
             {
               "branch": "value",
-              "id": 53,
+              "id": 64,
               "inputs": {},
-              "position": "870,430 870,640",
+              "position": "870,440 870,560",
               "sourceConnector": "bottom",
               "target": {
                 "id": 16
@@ -520,7 +522,7 @@
               "source": "\"Feldtyp \" + $set_field_values_forEach.item.type + \" wurde nicht erkannt (!).\""
             }
           },
-          "position": "330,380",
+          "position": "340,460",
           "title": "Log"
         },
         {
@@ -529,7 +531,7 @@
           "inputs": {
             "message": "Es handelt sich um einen Filepicker."
           },
-          "position": "1090,430",
+          "position": "1090,440",
           "title": "Log"
         },
         {
@@ -558,6 +560,7 @@
             {
               "branch": "false",
               "id": 59,
+              "inputs": {},
               "position": "-190,635 -70,635 -70,760",
               "sourceConnector": "right",
               "target": {
@@ -568,6 +571,7 @@
             {
               "branch": "true",
               "id": 74,
+              "inputs": {},
               "position": "-430,635 -500,635 -500,760",
               "sourceConnector": "left",
               "target": {
@@ -584,17 +588,17 @@
           "inputs": {
             "elementName": {
               "accessors": [
-                "$set_field_values_forEach"
+                "$field_id"
               ],
               "annotations": [
                 {
-                  "count": 25,
+                  "count": 9,
                   "index": 0,
                   "kind": "idref"
                 }
               ],
-              "code": "$set_field_values_forEach.item.name + \"_field\"",
-              "source": "$set_field_values_forEach.item.name + \"_field\""
+              "code": "$field_id.result",
+              "source": "$field_id.result"
             },
             "form": {
               "accessors": [
@@ -637,17 +641,17 @@
           "inputs": {
             "elementName": {
               "accessors": [
-                "$set_field_values_forEach"
+                "$field_id"
               ],
               "annotations": [
                 {
-                  "count": 25,
+                  "count": 9,
                   "index": 0,
                   "kind": "idref"
                 }
               ],
-              "code": "$set_field_values_forEach.item.name + \"_field\"",
-              "source": "$set_field_values_forEach.item.name + \"_field\""
+              "code": "$field_id.result",
+              "source": "$field_id.result"
             },
             "form": {
               "accessors": [
@@ -680,12 +684,13 @@
           ]
         },
         {
-          "action": "gcx:wf:forms::SetFormElementProperty",
-          "description": "set \"value\" to an empty value.",
-          "id": 66,
+          "action": "gcx:wf:core::CreateValue",
+          "id": 63,
           "inputs": {
-            "elementName": {
+            "expression": {
               "accessors": [
+                "$set_field_values_forEach",
+                "$set_field_values_forEach",
                 "$set_field_values_forEach"
               ],
               "annotations": [
@@ -693,10 +698,53 @@
                   "count": 25,
                   "index": 0,
                   "kind": "idref"
+                },
+                {
+                  "count": 25,
+                  "index": 40,
+                  "kind": "idref"
+                },
+                {
+                  "count": 25,
+                  "index": 79,
+                  "kind": "idref"
                 }
               ],
-              "code": "$set_field_values_forEach.item.name + \"_field\"",
-              "source": "$set_field_values_forEach.item.name + \"_field\""
+              "code": "$set_field_values_forEach.item?.field ? $set_field_values_forEach.item.field : $set_field_values_forEach.item.name + \"_field\"",
+              "source": "$set_field_values_forEach.item?.field ? $set_field_values_forEach.item.field : $set_field_values_forEach.item.name + \"_field\""
+            }
+          },
+          "name": "field_id",
+          "position": "-30,200",
+          "title": "Create Value",
+          "transitions": [
+            {
+              "id": 76,
+              "position": "90,260 90,310",
+              "target": {
+                "id": 14
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:forms::SetFormElementProperty",
+          "description": "set \"value\" to an empty value.",
+          "id": 66,
+          "inputs": {
+            "elementName": {
+              "accessors": [
+                "$field_id"
+              ],
+              "annotations": [
+                {
+                  "count": 9,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$field_id.result",
+              "source": "$field_id.result"
             },
             "form": {
               "accessors": [
